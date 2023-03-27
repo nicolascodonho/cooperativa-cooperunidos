@@ -17,9 +17,9 @@ Infraestrutura:
 
 Backend (API):
 - [ ] Criar as funções responsáveis por cada rota
-- [ ] Criar modelos para requisição
+- [x] Criar modelos para requisição
 - [ ] Criar rotas
-- [ ] Criar integração com banco de dados
+- [x] Criar integração com banco de dados
 
 - Frontend:
 
