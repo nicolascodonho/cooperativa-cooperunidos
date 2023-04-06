@@ -1,10 +1,6 @@
-from fastapi import FastAPI, status, Depends
-from pydantic import BaseModel
-from datetime import datetime
+from fastapi import FastAPI, Depends, HTTPException
 import logging
-from connection import engine, SessionLocal
-from sqlalchemy import Column
-from sqlalchemy.sql.sqltypes import Integer, String, DATE
+from connection import SessionLocal
 from sqlalchemy.orm import Session
 import models, schemas, insumos_controller
 
@@ -37,28 +33,34 @@ def get_insumos(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     
     return insumos, 200
 
-@app.get("/busca/{id}")
-def get_id_data():
-    return {
-        "message": "data"
-    }
+@app.get("/busca/{id}", response_model=schemas.Insumos)
+def get_insumo(id: int, db: Session = Depends(get_db)):
+    insumo = insumos_controller.get_id_data(db, id=id)
+    if insumo is None:
+        raise HTTPException(status_code=404, detail="Insumo não encontrado")
+    return insumo, 200
 
 @app.post("/cria", response_model=schemas.Insumos)
-def save(insumos: schemas.Insumos, db: Session = Depends(get_db)):
+async def save(insumos: schemas.Insumos, db: Session = Depends(get_db)):
     try:
-        data = insumos_controller.create_data(db, insumos)
+        data = await insumos_controller.create_data(db, insumos)
         return data, 200
     except Exception as e:
         print(e)
 
-@app.put("/atualiza/{id}")
-def update_data():
-    return {
+@app.put("/atualiza/{id}", response_model=schemas.Insumos)
+def update_data(id: int, insumos: schemas.Insumos, db: Session = Depends(get_db)):
+    try:
+        data = insumos_controller.update_data(id, db, insumos)
+        return data, 200
+    except Exception as e:
+        print(e)
+    
 
-    }
-
-@app.delete("/delete/{id}")
-def delete_by_id():
-    return {
-
-    }
+@app.delete("/delete/{id}", response_model=schemas.Insumos)
+def delete_by_id(id: int, db: Session = Depends(get_db)):
+    try:
+        data = insumos_controller.delete_by_id(id, db)
+        return data, 200
+    except Exception as e:
+        print(e)

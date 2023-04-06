@@ -16,9 +16,9 @@ Infraestrutura:
 - [ ] Estabelecer a comunicação entre os componentes para funcionamento do projeto
 
 Backend (API):
-- [ ] Criar as funções responsáveis por cada rota
+- [x] Criar as funções responsáveis por cada rota
 - [x] Criar modelos para requisição
-- [ ] Criar rotas
+- [x] Criar rotas
 - [x] Criar integração com banco de dados
 
 - Frontend:
