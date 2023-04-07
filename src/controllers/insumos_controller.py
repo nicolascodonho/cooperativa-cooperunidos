@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-import schemas, models
+import src.models.schemas as schemas, src.models.models as models
 from fastapi import HTTPException
 
 def create_data(db: Session, insumos: schemas.Insumos):
