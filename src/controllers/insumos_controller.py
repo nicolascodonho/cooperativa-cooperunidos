@@ -4,7 +4,6 @@ from fastapi import HTTPException
 
 def create_data(db: Session, insumos: schemas.Insumos):
     data = models.Insumos(**insumos.dict())
-
     db.add(data)
     db.commit()
     db.refresh(data)

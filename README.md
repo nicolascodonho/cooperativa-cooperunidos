@@ -12,8 +12,8 @@ O presente projeto visa atender uma demanda de cadastros de insumos recebidos pe
 ## Fases do projeto:
 
 Infraestrutura:
-- [ ] Criar dockerfile do projeto
-- [ ] Estabelecer a comunicação entre os componentes para funcionamento do projeto
+- [x] Criar dockerfile do projeto
+- [x] Estabelecer a comunicação entre os componentes para funcionamento do projeto
 
 Backend (API):
 - [x] Criar as funções responsáveis por cada rota

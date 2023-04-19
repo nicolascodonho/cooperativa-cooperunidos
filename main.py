@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 import logging
-from routes import insumos_routes
+from src.routes import insumos_routes
 
 app = FastAPI()
 app.include_router(insumos_routes.router)
