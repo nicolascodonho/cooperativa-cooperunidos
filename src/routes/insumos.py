@@ -19,7 +19,7 @@ def get_insumos(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     insumos = insumos_controller.get_all_data(db, skip, limit)
     if not insumos:
           return HTTPException(404, detail="Lista de insumos vazios!")
-    return insumos, 200
+    return {"mensagem": insumos, "status": 200}
 
 @router.get("/busca/{id}")
 def get_insumo(id: int, db: Session = Depends(get_db)):
@@ -27,7 +27,7 @@ def get_insumo(id: int, db: Session = Depends(get_db)):
     <code class='highlight'>/busca/{id}</code>
         Retorna o insumo através de um ID"""
     insumo = insumos_controller.get_id_data(id, db)
-    return insumo, 200
+    return {"mensagem": insumo, "status": 200}
 
 @router.post("/cria")
 async def save_insumos(insumos: schemas.InsumosCreate, db: Session = Depends(get_db)):
@@ -37,7 +37,7 @@ async def save_insumos(insumos: schemas.InsumosCreate, db: Session = Depends(get
     try:
         insumos_controller.create_data(db, insumos)
         msg = "Dados criados com sucesso"
-        return msg, 200
+        return {"mensagem": msg, "status": 201}
     except Exception as e:
         return HTTPException(500, detail="Nao foi possivel criado insumo, erro interno")
 
@@ -52,7 +52,7 @@ async def update_insumos(id: int, insumos: schemas.InsumosUpdate, db: Session = 
     try:
         insumos_controller.update_data(id, db, insumos)
         msg = "Dados atualizados com sucesso"
-        return msg, 200
+        return {"mensagem": msg, "status": 204}
     except Exception as e:
         return HTTPException(500, detail="Nao foi possivel atualizar insumo, erro interno")
     
@@ -68,6 +68,6 @@ async def delete_insumos(id: int, db: Session = Depends(get_db)):
     try:
         insumos_controller.delete_by_id(id, db)
         msg = "Dados excluídos com sucesso"
-        return msg, 200
+        return {"mensagem": msg, "status": 204}
     except Exception as e:
         HTTPException(500, detail="Nao foi possivel deletar insumo, erro interno")

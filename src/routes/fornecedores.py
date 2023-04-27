@@ -18,18 +18,18 @@ def get_fornecedores(skip: int = 0, limit: int = 10, db: Session = Depends(get_d
     fornecedor = fornecedor_controller.get_all_data(db, skip, limit)
     if not fornecedor:
         return HTTPException(404, detail="Lista de fornecedor vazia!")
-    return fornecedor, 200
+    return {"mensagem": fornecedor, "status": 200}
 
 @router.get("/busca/{id}")
 def get_fornecedor(id: int, db: Session = Depends(get_db)):
     fornecedor = fornecedor_controller.get_id_data(id, db)
-    return fornecedor, 200
+    return {"mensagem": fornecedor, "status": 200}
 
 @router.post("/cria")
 async def save_fornecedor(fornecedor: schemas.FornecedorCreate, db: Session = Depends(get_db)):
     try:
         fornecedor_controller.create_data(db, fornecedor)
-        return "Dados criados com sucesso", 201
+        return {"mensagem": "Dados criados com sucesso", "status": 201}
     except Exception as e:
         print(e)
         raise HTTPException(500, detail="Nao foi possível criar dados, erro interno")
@@ -41,7 +41,7 @@ async def update_fornecedor(id: int, fornecedor: schemas.FornecedorUpdate, db: S
     
     try:
         fornecedor_controller.update_data(id, db, fornecedor)
-        return "Dados atualizados com sucesso", 204
+        return {"mensagem": "Dados atualizados com sucesso", "status": 204}
     except Exception as e:
         return HTTPException(500, detail="Nao foi possivel atualizar dados, erro interno")
     
@@ -53,7 +53,7 @@ async def delete_fornecedor(id: int, db: Session = Depends(get_db)):
     try:
         fornecedor_controller.delete_by_id(id, db)
         msg = "Dados excluídos com sucesso"
-        return msg, 200
+        return {"mensagem": msg, "status": 204}
     except Exception as e:
         print(e)
         return HTTPException(500, detail="Nao foi possivel deletar dados, erro interno")

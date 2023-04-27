@@ -17,18 +17,18 @@ def get_vendas(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     vendas = vendas_controller.get_all_data(db, skip, limit)
     if not vendas:
         return HTTPException(404, detail="Lista de vendas vazias!")
-    return vendas, 200
+    return {"mensagem": vendas, "status": 200}
 
 @router.get("/busca/{id}")
 def get_venda(id: int, db: Session = Depends(get_db)):
     venda = vendas_controller.get_id_data(id, db)
-    return venda, 200
+    return {"mensagem": venda, "status": 200}
 
 @router.post("/cria")
 async def save_venda(vendas: schemas.VendasCreate, db: Session = Depends(get_db)):
     try:
         vendas_controller.create_data(db, vendas)
-        return "Dados criados com sucesso", 201
+        return {"mensagem": vendas, "status": 201}
     except Exception as e:
         return HTTPException(500, detail="Nao foi possível criar dados, erro interno")
 
@@ -39,7 +39,7 @@ async def update_venda(id: int, venda: schemas.VendasUpdate, db: Session = Depen
     
     try:
         vendas_controller.update_data(id, db, venda)
-        return "Dados atualizados com sucesso", 204
+        return {"mensagem": "Dados atualizados com sucesso", "status": 204}
     except Exception as e:
         return HTTPException(500, detail="Nao foi possivel atualizar dados, erro interno")
     
@@ -51,6 +51,6 @@ async def delete_venda(id: int, db: Session = Depends(get_db)):
     try:
         vendas_controller.delete_by_id(id, db)
         msg = "Dados excluídos com sucesso"
-        return msg, 200
+        return {"mensagem": msg, "status": 204}
     except Exception as e:
         return HTTPException(500, detail="Nao foi possivel deletar dados, erro interno")

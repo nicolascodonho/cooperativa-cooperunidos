@@ -18,18 +18,28 @@ def get_compradores(skip: int = 0, limit: int = 10, db: Session = Depends(get_db
     compradores = compradores_controller.get_all_data(db, skip, limit)
     if not compradores:
         return HTTPException(404, detail="Lista de compradores vazias!")
-    return compradores, 200
+    return {
+        "mensagem": compradores,
+        "status": 200
+    }
 
 @router.get("/busca/{id}")
 def get_comprador(id: int, db: Session = Depends(get_db)):
     comprador = compradores_controller.get_id_data(id, db)
-    return comprador, 200
+    return {
+        "mensagem": comprador,
+        "status": 200
+    }
 
 @router.post("/cria")
 async def save_compradores(compradores: schemas.CompradoresCreate, db: Session = Depends(get_db)):
     try:
         compradores_controller.create_data(db, compradores)
-        return "Dados criados com sucesso", 201
+        return {
+            "mensagem": "Dados criados com sucesso",
+            "status": 201
+        }        
+
     except Exception as e:
         return HTTPException(500, detail="Nao foi possível criar dados, erro interno")
 
@@ -40,7 +50,10 @@ async def update_comprador(id: int, comprador: schemas.CompradoresUpdate, db: Se
     
     try:
         compradores_controller.update_data(id, db, comprador)
-        return "Dados atualizados com sucesso", 204
+        return {
+            "mensagem": "Dados atualizados com sucesso",
+            "status": 204
+        }
     except Exception as e:
         return HTTPException(500, detail="Nao foi possivel atualizar dados, erro interno")
     
@@ -52,6 +65,9 @@ async def delete_comprador(id: int, db: Session = Depends(get_db)):
     try:
         compradores_controller.delete_by_id(id, db)
         msg = "Dados excluídos com sucesso"
-        return msg, 200
+        return {
+            "mensagem": msg,
+            "status": 204
+        }
     except Exception as e:
         return HTTPException(500, detail="Nao foi possivel deletar dados, erro interno")

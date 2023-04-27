@@ -12,9 +12,23 @@ services:
     volumes:
       - file-db:/var/lib/mysql
       - ./cooperativa.sql:/docker-entrypoint-initdb.d/cooperativa.sql
+    container_name: cooperunidos_db
+    networks:
+      - cooperunidos-network
+
   api:
-    build: .
+    image: ncscorpelini/projeto-integrador_api:0.1.0
     ports:
       - 8000:8000
+    container_name: cooperunidos_api
+    networks:
+      - cooperunidos-network
+    depends_on:
+      - db
+
 volumes:
   file-db:
+
+networks:
+  cooperunidos-network:
+    driver: bridge
