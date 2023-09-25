@@ -21,6 +21,14 @@ Backend (API):
 - [x] Criar rotas
 - [x] Criar integração com banco de dados
 
-- Frontend:
+## Segunda etapa do projeto:
+Cobertura de testes.
 
-- Banco de dados:
+Alguns adendos para que os testes possam rodar:
+- Todos os testes estão dentro do diretório *tests*
+- Para roda-los, é necessário que o banco de dados esteja rodando e devidamente configurado. Caso vá testar localmente, utilize o comando:
+```docker compose up db``` ou 
+```docker-compose up db``` 
+vai depender de qual ferramenta você tem disponível, para tal visite a [documentação](https://docs.docker.com/compose/gettingstarted/) e veja as configurações.
+- Por ultimo, utilize o comando:
+```pytest```
