@@ -14,6 +14,9 @@ models.Base.metadata.create_all(bind=engine)
 
 @router.get("/busca")
 def get_compradores(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
+    """
+    <code class='highlight'>/busca</code>
+        Retorna os compradores existentes dentro do banco limitados por skip e limit"""
 
     compradores = compradores_controller.get_all_data(db, skip, limit)
     if not compradores:
@@ -25,6 +28,9 @@ def get_compradores(skip: int = 0, limit: int = 10, db: Session = Depends(get_db
 
 @router.get("/busca/{id}")
 def get_comprador(id: int, db: Session = Depends(get_db)):
+    """
+    <code class='highlight'>/busca/{id}</code>
+        Retorna o comprador através de um ID"""
     comprador = compradores_controller.get_id_data(id, db)
     return {
         "mensagem": comprador,
@@ -33,6 +39,9 @@ def get_comprador(id: int, db: Session = Depends(get_db)):
 
 @router.post("/cria")
 async def save_compradores(compradores: schemas.CompradoresCreate, db: Session = Depends(get_db)):
+    """
+    <code class='highlight'>/cria</code>
+        Cria compradores baseado nos models """
     try:
         compradores_controller.create_data(db, compradores)
         return {
@@ -45,7 +54,9 @@ async def save_compradores(compradores: schemas.CompradoresCreate, db: Session =
 
 @router.put("/atualiza/{id}")
 async def update_comprador(id: int, comprador: schemas.CompradoresUpdate, db: Session = Depends(get_db)):
-    
+    """
+    <code class='highlight'>/atualiza/{id}</code>
+        Atualiza dados através de um ID"""
     compradores_controller.get_id_data(id, db)
     
     try:
@@ -59,7 +70,9 @@ async def update_comprador(id: int, comprador: schemas.CompradoresUpdate, db: Se
     
 @router.delete("/deleta/{id}")
 async def delete_comprador(id: int, db: Session = Depends(get_db)):
-
+    """
+    <code class='highlight'>/delete/{id}</code>
+        Deleta dados através de um ID"""
     compradores_controller.get_id_data(id, db)
 
     try:

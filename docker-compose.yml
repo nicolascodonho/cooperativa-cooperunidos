@@ -17,10 +17,13 @@ services:
       - cooperunidos-network
 
   api:
-    image: ncscorpelini/projeto-integrador_api:0.1.0
+    image: ncscorpelini/projeto-integrador_api:0.1.3
+    # build: .
     ports:
       - 8000:8000
     container_name: cooperunidos_api
+    extra_hosts:
+      - host.docker.local:host-gateway
     networks:
       - cooperunidos-network
     depends_on:

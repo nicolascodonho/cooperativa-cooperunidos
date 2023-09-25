@@ -18,11 +18,26 @@ def get_all_data(db: Session, skip: int = 0, limit: int = 10):
 def get_id_data(id: int, db: Session):
     data = db.query(models.Fornecedor).filter(models.Fornecedor.id == id).first()
     if not data:
-        raise HTTPException(404, detail="Id nao encontrado")
+        raise HTTPException(404, detail="Id não encontrado")
     return data
 
 def delete_by_id(id: int, db: Session):
-    return db.query(models.Fornecedor).filter(models.Fornecedor.id == id).delete()
+    existing_job = db.query(models.Fornecedor).filter(models.Fornecedor.id == id).first()
+    print('entrou na function')
+    if not existing_job:
+        return "Fornecedor não encontrado"
+    
+    try:
+        insumos = db.query(models.Insumos).filter(models.Insumos.id_fornecedor == id).all()
+        if insumos:
+            for insumo in insumos:
+                db.delete(insumo)
+
+        db.delete(existing_job)
+        db.commit()
+        return existing_job
+    except Exception as e:
+        print("Opsie: ", e)
 
 def update_data(id: int, db: Session, fornecedor: schemas.FornecedorUpdate):
     db_fornecedor = db.query(models.Fornecedor).filter(models.Fornecedor.id == id).first()

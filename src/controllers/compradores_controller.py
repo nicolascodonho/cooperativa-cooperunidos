@@ -22,7 +22,17 @@ def get_id_data(id: int, db: Session):
     return db.query(models.Compradores).filter(models.Compradores.id == id).first()
 
 def delete_by_id(id: int, db: Session):
-    return db.query(models.Compradores).filter(models.Compradores.id == id).delete()
+    existing_job = db.query(models.Compradores).filter(models.Compradores.id == id).first()
+    if not existing_job:
+        return 0
+    vendas = db.query(models.Vendas).filter(models.Vendas.id_comprador == id).all()
+    if vendas:
+        # Delete the related records in tb_vendas
+        for venda in vendas:
+            db.delete(venda)
+    db.delete(existing_job)
+    db.commit()
+    return existing_job
 
 def update_data(id: int, db: Session, compradores: schemas.CompradoresUpdate):
     db_comprador = db.query(models.Compradores).filter(models.Compradores.id == id).first()

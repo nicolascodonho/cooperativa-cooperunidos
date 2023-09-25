@@ -22,7 +22,20 @@ def get_id_data(id: int, db: Session):
     return data
 
 def delete_by_id(id: int, db: Session):
-    return db.query(models.Insumos).filter(models.Insumos.id == id).delete()
+    existing_job = db.query(models.Insumos).filter(models.Insumos.id == id).first()
+    if not existing_job:
+        return 0
+    
+    vendas = db.query(models.Vendas).filter(models.Vendas.id_insumo == id).all()
+    
+    if vendas:
+        # Delete the related records in tb_vendas
+        for venda in vendas:
+            db.delete(venda)
+
+    db.delete(existing_job)
+    db.commit()
+    return existing_job
 
 def update_data(id: int, db: Session, insumo: schemas.InsumosUpdate):
     db_insumo = db.query(models.Insumos).filter(models.Insumos.id == id).first()
