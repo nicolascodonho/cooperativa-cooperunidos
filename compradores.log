@@ -1,0 +1,297 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.5, pytest-7.4.2, pluggy-1.3.0
+rootdir: /home/nicoboco/vscode/projeto-integrador
+plugins: anyio-3.6.2
+collected 6 items
+
+tests/test_compradores.py F                                              [ 16%]
+tests/test_fornecedores.py .....                                         [100%]
+
+=================================== FAILURES ===================================
+___________________________ test_create_compradores ____________________________
+
+    def test_create_compradores():
+        comprador = {'nome_empresa': 'comprador-teste'}
+        res = client.post('/compradores/cria', json=comprador)
+>       assert res.json() == 200
+E       AssertionError: assert {'mensagem': 'Dados criados com sucesso', 'status': 201} == 200
+E        +  where {'mensagem': 'Dados criados com sucesso', 'status': 201} = <bound method Response.json of <Response [200 OK]>>()
+E        +    where <bound method Response.json of <Response [200 OK]>> = <Response [200 OK]>.json
+
+tests/test_compradores.py:17: AssertionError
+------------------------------ Captured log call -------------------------------
+INFO     sqlalchemy.engine.Engine:base.py:1027 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1853 INSERT INTO tb_compradores (id, nome_empresa, created_at, updated_at) VALUES (%(id)s, %(nome_empresa)s, %(created_at)s, %(updated_at)s)
+INFO     sqlalchemy.engine.Engine:base.py:1858 [generated in 0.00018s] {'id': 853248574, 'nome_empresa': 'comprador-teste', 'created_at': datetime.datetime(2023, 9, 27, 2, 38, 31, 41762), 'updated_at': datetime.datetime(2023, 9, 27, 2, 38, 31, 41767)}
+INFO     sqlalchemy.engine.Engine:base.py:1087 COMMIT
+INFO     sqlalchemy.engine.Engine:base.py:1027 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1853 SELECT tb_compradores.id, tb_compradores.nome_empresa, tb_compradores.created_at, tb_compradores.updated_at 
+FROM tb_compradores 
+WHERE tb_compradores.id = %(pk_1)s
+INFO     sqlalchemy.engine.Engine:base.py:1858 [generated in 0.00077s] {'pk_1': 853248574}
+INFO     sqlalchemy.engine.Engine:base.py:1055 ROLLBACK
+=============================== warnings summary ===============================
+src/models/models.py:41
+  /home/nicoboco/vscode/projeto-integrador/tests/../src/models/models.py:41: SAWarning: Can't validate argument 'passive_deletes'; can't locate any SQLAlchemy dialect named 'passive'
+    class Vendas(Base):
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_compradores.py::test_create_compradores - AssertionError: a...
+==================== 1 failed, 5 passed, 1 warning in 2.64s ====================
+============================= test session starts ==============================
+platform linux -- Python 3.10.5, pytest-7.4.2, pluggy-1.3.0
+rootdir: /home/nicoboco/vscode/projeto-integrador
+plugins: anyio-3.6.2
+collected 7 items
+
+tests/test_compradores.py .F                                             [ 28%]
+tests/test_fornecedores.py .....                                         [100%]
+
+=================================== FAILURES ===================================
+_____________________________ test_get_compradores _____________________________
+
+    def test_get_compradores():
+        res = client.get('/compradores/busca')
+>       assert res.json() == 'comprador-teste'
+E       AssertionError: assert {'mensagem': [{'created_at': '2023-09-27T02:37:54', 'id': 476848139, 'nome_empresa': 'comprador-teste', 'updated_at': ...7T02:39:48', 'id': 4207701474, 'nome_empresa': 'comprador-teste', 'updated_at': '2023-09-27T02:39:48'}], 'status': 200} == 'comprador-teste'
+E        +  where {'mensagem': [{'created_at': '2023-09-27T02:37:54', 'id': 476848139, 'nome_empresa': 'comprador-teste', 'updated_at': ...7T02:39:48', 'id': 4207701474, 'nome_empresa': 'comprador-teste', 'updated_at': '2023-09-27T02:39:48'}], 'status': 200} = <bound method Response.json of <Response [200 OK]>>()
+E        +    where <bound method Response.json of <Response [200 OK]>> = <Response [200 OK]>.json
+
+tests/test_compradores.py:22: AssertionError
+------------------------------ Captured log call -------------------------------
+INFO     sqlalchemy.engine.Engine:base.py:1027 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1853 SELECT tb_compradores.id AS tb_compradores_id, tb_compradores.nome_empresa AS tb_compradores_nome_empresa, tb_compradores.created_at AS tb_compradores_created_at, tb_compradores.updated_at AS tb_compradores_updated_at 
+FROM tb_compradores 
+ LIMIT %(param_1)s, %(param_2)s
+INFO     sqlalchemy.engine.Engine:base.py:1858 [generated in 0.00055s] {'param_1': 0, 'param_2': 10}
+INFO     sqlalchemy.engine.Engine:base.py:1055 ROLLBACK
+=============================== warnings summary ===============================
+src/models/models.py:41
+  /home/nicoboco/vscode/projeto-integrador/tests/../src/models/models.py:41: SAWarning: Can't validate argument 'passive_deletes'; can't locate any SQLAlchemy dialect named 'passive'
+    class Vendas(Base):
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_compradores.py::test_get_compradores - AssertionError: asse...
+==================== 1 failed, 6 passed, 1 warning in 2.58s ====================
+============================= test session starts ==============================
+platform linux -- Python 3.10.5, pytest-7.4.2, pluggy-1.3.0
+rootdir: /home/nicoboco/vscode/projeto-integrador
+plugins: anyio-3.6.2
+collected 8 items
+
+tests/test_compradores.py ..F                                            [ 37%]
+tests/test_fornecedores.py .....                                         [100%]
+
+=================================== FAILURES ===================================
+__________________________ test_get_compradores_by_id __________________________
+
+    def test_get_compradores_by_id():
+        id = get_id()
+        res = client.get(f'/compradores/busca/{id}')
+>       assert res.json() == 'comprador-teste'
+E       AssertionError: assert {'mensagem': {'created_at': '2023-09-27T02:37:54', 'id': 476848139, 'nome_empresa': 'comprador-teste', 'updated_at': '2023-09-27T02:37:54'}, 'status': 200} == 'comprador-teste'
+E        +  where {'mensagem': {'created_at': '2023-09-27T02:37:54', 'id': 476848139, 'nome_empresa': 'comprador-teste', 'updated_at': '2023-09-27T02:37:54'}, 'status': 200} = <bound method Response.json of <Response [200 OK]>>()
+E        +    where <bound method Response.json of <Response [200 OK]>> = <Response [200 OK]>.json
+
+tests/test_compradores.py:27: AssertionError
+------------------------------ Captured log call -------------------------------
+INFO     sqlalchemy.engine.Engine:base.py:1027 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1853 SELECT tb_compradores.id AS tb_compradores_id, tb_compradores.nome_empresa AS tb_compradores_nome_empresa, tb_compradores.created_at AS tb_compradores_created_at, tb_compradores.updated_at AS tb_compradores_updated_at 
+FROM tb_compradores 
+ LIMIT %(param_1)s, %(param_2)s
+INFO     sqlalchemy.engine.Engine:base.py:1858 [cached since 0.01493s ago] {'param_1': 0, 'param_2': 10}
+INFO     sqlalchemy.engine.Engine:base.py:1055 ROLLBACK
+INFO     sqlalchemy.engine.Engine:base.py:1027 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1853 SELECT tb_compradores.id AS tb_compradores_id, tb_compradores.nome_empresa AS tb_compradores_nome_empresa, tb_compradores.created_at AS tb_compradores_created_at, tb_compradores.updated_at AS tb_compradores_updated_at 
+FROM tb_compradores 
+WHERE tb_compradores.id = %(id_1)s 
+ LIMIT %(param_1)s
+INFO     sqlalchemy.engine.Engine:base.py:1858 [generated in 0.00027s] {'id_1': 476848139, 'param_1': 1}
+INFO     sqlalchemy.engine.Engine:base.py:1055 ROLLBACK
+=============================== warnings summary ===============================
+src/models/models.py:41
+  /home/nicoboco/vscode/projeto-integrador/tests/../src/models/models.py:41: SAWarning: Can't validate argument 'passive_deletes'; can't locate any SQLAlchemy dialect named 'passive'
+    class Vendas(Base):
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_compradores.py::test_get_compradores_by_id - AssertionError...
+==================== 1 failed, 7 passed, 1 warning in 2.35s ====================
+============================= test session starts ==============================
+platform linux -- Python 3.10.5, pytest-7.4.2, pluggy-1.3.0
+rootdir: /home/nicoboco/vscode/projeto-integrador
+plugins: anyio-3.6.2
+collected 9 items
+
+tests/test_compradores.py ...F                                           [ 44%]
+tests/test_fornecedores.py .....                                         [100%]
+
+=================================== FAILURES ===================================
+___________________________ test_update_compradores ____________________________
+
+    def test_update_compradores():
+        id = get_id()
+        comprador = {'nome': 'novo-comprador'}
+        res = client.put(f'/compradores/atualiza/{id}', json=comprador)
+    
+>       assert res.json()['status'] == 204
+E       KeyError: 'status'
+
+tests/test_compradores.py:34: KeyError
+------------------------------ Captured log call -------------------------------
+INFO     sqlalchemy.engine.Engine:base.py:1027 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1853 SELECT tb_compradores.id AS tb_compradores_id, tb_compradores.nome_empresa AS tb_compradores_nome_empresa, tb_compradores.created_at AS tb_compradores_created_at, tb_compradores.updated_at AS tb_compradores_updated_at 
+FROM tb_compradores 
+ LIMIT %(param_1)s, %(param_2)s
+INFO     sqlalchemy.engine.Engine:base.py:1858 [cached since 0.08358s ago] {'param_1': 0, 'param_2': 10}
+INFO     sqlalchemy.engine.Engine:base.py:1055 ROLLBACK
+=============================== warnings summary ===============================
+src/models/models.py:41
+  /home/nicoboco/vscode/projeto-integrador/tests/../src/models/models.py:41: SAWarning: Can't validate argument 'passive_deletes'; can't locate any SQLAlchemy dialect named 'passive'
+    class Vendas(Base):
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_compradores.py::test_update_compradores - KeyError: 'status'
+==================== 1 failed, 8 passed, 1 warning in 3.21s ====================
+============================= test session starts ==============================
+platform linux -- Python 3.10.5, pytest-7.4.2, pluggy-1.3.0
+rootdir: /home/nicoboco/vscode/projeto-integrador
+plugins: anyio-3.6.2
+collected 9 items
+
+tests/test_compradores.py ...F                                           [ 44%]
+tests/test_fornecedores.py .....                                         [100%]
+
+=================================== FAILURES ===================================
+___________________________ test_update_compradores ____________________________
+
+    def test_update_compradores():
+        id = get_id()
+        comprador = {'nome': 'novo-comprador'}
+        res = client.put(f'/compradores/atualiza/{id}', json=comprador)
+    
+>       assert res.json() == 204
+E       AssertionError: assert {'detail': [{'loc': ['body', 'nome_empresa'], 'msg': 'field required', 'type': 'value_error.missing'}]} == 204
+E        +  where {'detail': [{'loc': ['body', 'nome_empresa'], 'msg': 'field required', 'type': 'value_error.missing'}]} = <bound method Response.json of <Response [422 Unprocessable Entity]>>()
+E        +    where <bound method Response.json of <Response [422 Unprocessable Entity]>> = <Response [422 Unprocessable Entity]>.json
+
+tests/test_compradores.py:34: AssertionError
+------------------------------ Captured log call -------------------------------
+INFO     sqlalchemy.engine.Engine:base.py:1027 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1853 SELECT tb_compradores.id AS tb_compradores_id, tb_compradores.nome_empresa AS tb_compradores_nome_empresa, tb_compradores.created_at AS tb_compradores_created_at, tb_compradores.updated_at AS tb_compradores_updated_at 
+FROM tb_compradores 
+ LIMIT %(param_1)s, %(param_2)s
+INFO     sqlalchemy.engine.Engine:base.py:1858 [cached since 0.08287s ago] {'param_1': 0, 'param_2': 10}
+INFO     sqlalchemy.engine.Engine:base.py:1055 ROLLBACK
+=============================== warnings summary ===============================
+src/models/models.py:41
+  /home/nicoboco/vscode/projeto-integrador/tests/../src/models/models.py:41: SAWarning: Can't validate argument 'passive_deletes'; can't locate any SQLAlchemy dialect named 'passive'
+    class Vendas(Base):
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_compradores.py::test_update_compradores - AssertionError: a...
+==================== 1 failed, 8 passed, 1 warning in 2.81s ====================
+============================= test session starts ==============================
+platform linux -- Python 3.10.5, pytest-7.4.2, pluggy-1.3.0
+rootdir: /home/nicoboco/vscode/projeto-integrador
+plugins: anyio-3.6.2
+collected 9 items
+
+tests/test_compradores.py .FFF                                           [ 44%]
+tests/test_fornecedores.py .....                                         [100%]
+
+=================================== FAILURES ===================================
+_____________________________ test_get_compradores _____________________________
+
+    def test_get_compradores():
+        res = client.get('/compradores/busca')
+>       assert res.json()['mensagem'][0]['nome_empresa'] == 'comprador-teste'
+E       AssertionError: assert 'novo-comprador' == 'comprador-teste'
+E         - comprador-teste
+E         + novo-comprador
+
+tests/test_compradores.py:22: AssertionError
+------------------------------ Captured log call -------------------------------
+INFO     sqlalchemy.engine.Engine:base.py:1027 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1853 SELECT tb_compradores.id AS tb_compradores_id, tb_compradores.nome_empresa AS tb_compradores_nome_empresa, tb_compradores.created_at AS tb_compradores_created_at, tb_compradores.updated_at AS tb_compradores_updated_at 
+FROM tb_compradores 
+ LIMIT %(param_1)s, %(param_2)s
+INFO     sqlalchemy.engine.Engine:base.py:1858 [generated in 0.00056s] {'param_1': 0, 'param_2': 10}
+INFO     sqlalchemy.engine.Engine:base.py:1055 ROLLBACK
+__________________________ test_get_compradores_by_id __________________________
+
+    def test_get_compradores_by_id():
+        id = get_id()
+        res = client.get(f'/compradores/busca/{id}')
+>       assert res.json()['mensagem']['nome_empresa'] == 'comprador-teste'
+E       AssertionError: assert 'novo-comprador' == 'comprador-teste'
+E         - comprador-teste
+E         + novo-comprador
+
+tests/test_compradores.py:27: AssertionError
+------------------------------ Captured log call -------------------------------
+INFO     sqlalchemy.engine.Engine:base.py:1027 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1853 SELECT tb_compradores.id AS tb_compradores_id, tb_compradores.nome_empresa AS tb_compradores_nome_empresa, tb_compradores.created_at AS tb_compradores_created_at, tb_compradores.updated_at AS tb_compradores_updated_at 
+FROM tb_compradores 
+ LIMIT %(param_1)s, %(param_2)s
+INFO     sqlalchemy.engine.Engine:base.py:1858 [cached since 0.09685s ago] {'param_1': 0, 'param_2': 10}
+INFO     sqlalchemy.engine.Engine:base.py:1055 ROLLBACK
+INFO     sqlalchemy.engine.Engine:base.py:1027 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1853 SELECT tb_compradores.id AS tb_compradores_id, tb_compradores.nome_empresa AS tb_compradores_nome_empresa, tb_compradores.created_at AS tb_compradores_created_at, tb_compradores.updated_at AS tb_compradores_updated_at 
+FROM tb_compradores 
+WHERE tb_compradores.id = %(id_1)s 
+ LIMIT %(param_1)s
+INFO     sqlalchemy.engine.Engine:base.py:1858 [generated in 0.00015s] {'id_1': 476848139, 'param_1': 1}
+INFO     sqlalchemy.engine.Engine:base.py:1055 ROLLBACK
+___________________________ test_delete_compradores ____________________________
+
+    def test_delete_compradores():
+        id = get_id()
+        res = client.delete(f'/compradores/deleta/{id}')
+    
+>       assert res.json() == 200
+E       AssertionError: assert {'mensagem': 'Dados excluídos com sucesso', 'status': 204} == 200
+E        +  where {'mensagem': 'Dados excluídos com sucesso', 'status': 204} = <bound method Response.json of <Response [200 OK]>>()
+E        +    where <bound method Response.json of <Response [200 OK]>> = <Response [200 OK]>.json
+
+tests/test_compradores.py:41: AssertionError
+------------------------------ Captured log call -------------------------------
+INFO     sqlalchemy.engine.Engine:base.py:1027 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1853 SELECT tb_compradores.id AS tb_compradores_id, tb_compradores.nome_empresa AS tb_compradores_nome_empresa, tb_compradores.created_at AS tb_compradores_created_at, tb_compradores.updated_at AS tb_compradores_updated_at 
+FROM tb_compradores 
+ LIMIT %(param_1)s, %(param_2)s
+INFO     sqlalchemy.engine.Engine:base.py:1858 [cached since 0.1143s ago] {'param_1': 0, 'param_2': 10}
+INFO     sqlalchemy.engine.Engine:base.py:1055 ROLLBACK
+INFO     sqlalchemy.engine.Engine:base.py:1027 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1853 SELECT tb_compradores.id AS tb_compradores_id, tb_compradores.nome_empresa AS tb_compradores_nome_empresa, tb_compradores.created_at AS tb_compradores_created_at, tb_compradores.updated_at AS tb_compradores_updated_at 
+FROM tb_compradores 
+WHERE tb_compradores.id = %(id_1)s 
+ LIMIT %(param_1)s
+INFO     sqlalchemy.engine.Engine:base.py:1858 [cached since 0.017s ago] {'id_1': 476848139, 'param_1': 1}
+INFO     sqlalchemy.engine.Engine:base.py:1853 SELECT tb_compradores.id AS tb_compradores_id, tb_compradores.nome_empresa AS tb_compradores_nome_empresa, tb_compradores.created_at AS tb_compradores_created_at, tb_compradores.updated_at AS tb_compradores_updated_at 
+FROM tb_compradores 
+WHERE tb_compradores.id = %(id_1)s 
+ LIMIT %(param_1)s
+INFO     sqlalchemy.engine.Engine:base.py:1858 [cached since 0.01811s ago] {'id_1': 476848139, 'param_1': 1}
+INFO     sqlalchemy.engine.Engine:base.py:1853 SELECT tb_vendas.id AS tb_vendas_id, tb_vendas.id_insumo AS tb_vendas_id_insumo, tb_vendas.id_comprador AS tb_vendas_id_comprador, tb_vendas.peso AS tb_vendas_peso, tb_vendas.data_venda AS tb_vendas_data_venda, tb_vendas.responsavel AS tb_vendas_responsavel, tb_vendas.valor AS tb_vendas_valor, tb_vendas.created_at AS tb_vendas_created_at, tb_vendas.updated_at AS tb_vendas_updated_at 
+FROM tb_vendas 
+WHERE tb_vendas.id_comprador = %(id_comprador_1)s
+INFO     sqlalchemy.engine.Engine:base.py:1858 [generated in 0.00020s] {'id_comprador_1': 476848139}
+INFO     sqlalchemy.engine.Engine:base.py:1853 DELETE FROM tb_compradores WHERE tb_compradores.id = %(id)s
+INFO     sqlalchemy.engine.Engine:base.py:1858 [generated in 0.00014s] {'id': 476848139}
+INFO     sqlalchemy.engine.Engine:base.py:1087 COMMIT
+=============================== warnings summary ===============================
+src/models/models.py:41
+  /home/nicoboco/vscode/projeto-integrador/tests/../src/models/models.py:41: SAWarning: Can't validate argument 'passive_deletes'; can't locate any SQLAlchemy dialect named 'passive'
+    class Vendas(Base):
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_compradores.py::test_get_compradores - AssertionError: asse...
+FAILED tests/test_compradores.py::test_get_compradores_by_id - AssertionError...
+FAILED tests/test_compradores.py::test_delete_compradores - AssertionError: a...
+==================== 3 failed, 6 passed, 1 warning in 2.89s ====================
