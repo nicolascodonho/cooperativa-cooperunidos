@@ -24,9 +24,9 @@ class VendasBase(BaseModel):
     id_insumo: int
     id_comprador: int
     peso: float
-    data_venda: Optional[datetime]
     responsavel: str
     valor: float
+    data_venda: Optional[datetime]
 
 class VendasCreate(VendasBase):
     pass

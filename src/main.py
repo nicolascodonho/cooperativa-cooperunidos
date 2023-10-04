@@ -1,6 +1,6 @@
+import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import logging
 from src.routes import insumos
 from src.routes import vendas
 from src.routes import compradores

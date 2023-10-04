@@ -37,9 +37,9 @@ async def save_venda(vendas: schemas.VendasCreate, db: Session = Depends(get_db)
         Cria vendas baseado nos models """
     try:
         vendas_controller.create_data(db, vendas)
-        return {"mensagem": vendas, "status": 201}
+        return {"mensagem": 'Dados criados com sucesso', "status": 201}
     except Exception as e:
-        return HTTPException(500, detail="Nao foi possível criar dados, erro interno")
+        return HTTPException(500, detail=f"Nao foi possível criar dados, erro interno: {e}")
 
 @router.put("/atualiza/{id}")
 async def update_venda(id: int, venda: schemas.VendasUpdate, db: Session = Depends(get_db)):
@@ -52,7 +52,7 @@ async def update_venda(id: int, venda: schemas.VendasUpdate, db: Session = Depen
         vendas_controller.update_data(id, db, venda)
         return {"mensagem": "Dados atualizados com sucesso", "status": 204}
     except Exception as e:
-        return HTTPException(500, detail="Nao foi possivel atualizar dados, erro interno")
+        return HTTPException(500, detail=f"Nao foi possivel atualizar dados, erro interno: {e}")
     
 @router.delete("/deleta/{id}")
 async def delete_venda(id: int, db: Session = Depends(get_db)):
@@ -69,4 +69,4 @@ async def delete_venda(id: int, db: Session = Depends(get_db)):
         return {"mensagem": msg, "status": 204}
     
     except Exception as e:
-        return HTTPException(500, detail="Nao foi possivel deletar dados, erro interno")
+        return HTTPException(500, detail=f"Nao foi possivel deletar dados, erro interno: {e}")

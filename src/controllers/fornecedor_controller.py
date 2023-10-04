@@ -23,7 +23,6 @@ def get_id_data(id: int, db: Session):
 
 def delete_by_id(id: int, db: Session):
     existing_job = db.query(models.Fornecedor).filter(models.Fornecedor.id == id).first()
-    print('entrou na function')
     if not existing_job:
         return "Fornecedor não encontrado"
     

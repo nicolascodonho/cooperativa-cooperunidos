@@ -1,0 +1,292 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.5, pytest-7.4.2, pluggy-1.3.0
+rootdir: /home/nicoboco/vscode/projeto-integrador
+plugins: anyio-3.6.2
+collected 17 items
+
+tests/test_compradores.py .....                                          [ 29%]
+tests/test_fornecedores.py .....                                         [ 58%]
+tests/test_insumos.py .....                                              [ 88%]
+tests/test_vendas.py FF                                                  [100%]
+
+=================================== FAILURES ===================================
+______________________________ test_create_vendas ______________________________
+
+    def test_create_vendas():
+>       id_insumo = get_id('insumos')
+
+tests/test_vendas.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+schema = 'insumos'
+
+    def get_id(schema: str):
+        data = client.get(f'/{schema}/busca')
+>       id = data.json()['mensagem'][0]['id']
+E       KeyError: 'mensagem'
+
+tests/test_vendas.py:12: KeyError
+------------------------------ Captured log call -------------------------------
+INFO     sqlalchemy.engine.Engine:base.py:1027 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1853 SELECT tb_insumos.id AS tb_insumos_id, tb_insumos.id_fornecedor AS tb_insumos_id_fornecedor, tb_insumos.nome_insumo AS tb_insumos_nome_insumo, tb_insumos.created_at AS tb_insumos_created_at, tb_insumos.updated_at AS tb_insumos_updated_at 
+FROM tb_insumos 
+ LIMIT %(param_1)s, %(param_2)s
+INFO     sqlalchemy.engine.Engine:base.py:1858 [cached since 0.9911s ago] {'param_1': 0, 'param_2': 10}
+INFO     sqlalchemy.engine.Engine:base.py:1055 ROLLBACK
+_______________________________ test_get_vendas ________________________________
+
+    def test_get_vendas():
+        res = client.get('/vendas/busca')
+>       assert res.json()['mensagem'][0]['nome_insumo'] == 'Cobre'
+E       KeyError: 'mensagem'
+
+tests/test_vendas.py:35: KeyError
+------------------------------ Captured log call -------------------------------
+INFO     sqlalchemy.engine.Engine:base.py:1027 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1853 SELECT tb_vendas.id AS tb_vendas_id, tb_vendas.id_insumo AS tb_vendas_id_insumo, tb_vendas.id_comprador AS tb_vendas_id_comprador, tb_vendas.peso AS tb_vendas_peso, tb_vendas.data_venda AS tb_vendas_data_venda, tb_vendas.responsavel AS tb_vendas_responsavel, tb_vendas.valor AS tb_vendas_valor, tb_vendas.created_at AS tb_vendas_created_at, tb_vendas.updated_at AS tb_vendas_updated_at 
+FROM tb_vendas 
+ LIMIT %(param_1)s, %(param_2)s
+INFO     sqlalchemy.engine.Engine:base.py:1858 [generated in 0.00014s] {'param_1': 0, 'param_2': 10}
+INFO     sqlalchemy.engine.Engine:base.py:1055 ROLLBACK
+=============================== warnings summary ===============================
+src/models/models.py:41
+  /home/nicoboco/vscode/projeto-integrador/tests/../src/models/models.py:41: SAWarning: Can't validate argument 'passive_deletes'; can't locate any SQLAlchemy dialect named 'passive'
+    class Vendas(Base):
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_vendas.py::test_create_vendas - KeyError: 'mensagem'
+FAILED tests/test_vendas.py::test_get_vendas - KeyError: 'mensagem'
+=================== 2 failed, 15 passed, 1 warning in 6.10s ====================
+============================= test session starts ==============================
+platform linux -- Python 3.10.5, pytest-7.4.2, pluggy-1.3.0
+rootdir: /home/nicoboco/vscode/projeto-integrador
+plugins: anyio-3.6.2
+collected 12 items
+
+tests/test_compradores.py .....                                          [ 41%]
+tests/test_fornecedores.py .....                                         [ 83%]
+tests/test_insumos.py .                                                  [ 91%]
+tests/test_vendas.py F                                                   [100%]
+
+=================================== FAILURES ===================================
+______________________________ test_create_vendas ______________________________
+
+    def test_create_vendas():
+        id_insumo = get_id('insumos')
+        id_comprador = get_id('compradores')
+        peso = 14
+        responsavel = 'responsavel-teste'
+        valor = 20.00
+        data_venda = datetime.utcnow()
+        data_formatada = data_venda.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+        vendas = {
+            'id_insumo': id_insumo,
+            'id_comprador': id_comprador,
+            'peso': peso,
+            'responsavel': responsavel,
+            'data_venda': data_formatada,
+            'valor': valor
+        }
+    
+        res = client.post('/vendas/cria', json=vendas)
+        assert res.json()['status'] == 201
+>       assert res.json()['mensagem'] == "Dados criados com sucesso"
+E       AssertionError: assert {'data_venda': '2023-10-02T02:23:14.987837+00:00', 'id_comprador': 3528720683, 'id_insumo': 2240395530, 'peso': 14.0, ...} == 'Dados criados com sucesso'
+
+tests/test_vendas.py:40: AssertionError
+------------------------------ Captured log call -------------------------------
+INFO     sqlalchemy.engine.Engine:base.py:1027 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1853 SELECT tb_insumos.id AS tb_insumos_id, tb_insumos.id_fornecedor AS tb_insumos_id_fornecedor, tb_insumos.nome_insumo AS tb_insumos_nome_insumo, tb_insumos.created_at AS tb_insumos_created_at, tb_insumos.updated_at AS tb_insumos_updated_at 
+FROM tb_insumos 
+ LIMIT %(param_1)s, %(param_2)s
+INFO     sqlalchemy.engine.Engine:base.py:1858 [generated in 0.00036s] {'param_1': 0, 'param_2': 10}
+INFO     sqlalchemy.engine.Engine:base.py:1055 ROLLBACK
+INFO     sqlalchemy.engine.Engine:base.py:1027 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1853 SELECT tb_compradores.id AS tb_compradores_id, tb_compradores.nome_empresa AS tb_compradores_nome_empresa, tb_compradores.created_at AS tb_compradores_created_at, tb_compradores.updated_at AS tb_compradores_updated_at 
+FROM tb_compradores 
+ LIMIT %(param_1)s, %(param_2)s
+INFO     sqlalchemy.engine.Engine:base.py:1858 [cached since 3.309s ago] {'param_1': 0, 'param_2': 10}
+INFO     sqlalchemy.engine.Engine:base.py:1055 ROLLBACK
+INFO     sqlalchemy.engine.Engine:base.py:1027 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1853 INSERT INTO tb_vendas (id, id_insumo, id_comprador, peso, data_venda, responsavel, valor, created_at, updated_at) VALUES (%(id)s, %(id_insumo)s, %(id_comprador)s, %(peso)s, %(data_venda)s, %(responsavel)s, %(valor)s, %(created_at)s, %(updated_at)s)
+INFO     sqlalchemy.engine.Engine:base.py:1858 [generated in 0.00022s] {'id': 1041402807, 'id_insumo': 2240395530, 'id_comprador': 3528720683, 'peso': 14.0, 'data_venda': datetime.datetime(2023, 10, 2, 2, 23, 14, 987837, tzinfo=datetime.timezone.utc), 'responsavel': 'responsavel-teste', 'valor': 20.0, 'created_at': datetime.datetime(2023, 10, 2, 2, 23, 14, 991752), 'updated_at': datetime.datetime(2023, 10, 2, 2, 23, 14, 991757)}
+INFO     sqlalchemy.engine.Engine:base.py:1087 COMMIT
+INFO     sqlalchemy.engine.Engine:base.py:1027 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1853 SELECT tb_vendas.id, tb_vendas.id_insumo, tb_vendas.id_comprador, tb_vendas.peso, tb_vendas.data_venda, tb_vendas.responsavel, tb_vendas.valor, tb_vendas.created_at, tb_vendas.updated_at 
+FROM tb_vendas 
+WHERE tb_vendas.id = %(pk_1)s
+INFO     sqlalchemy.engine.Engine:base.py:1858 [generated in 0.00060s] {'pk_1': 1041402807}
+INFO     sqlalchemy.engine.Engine:base.py:1055 ROLLBACK
+=============================== warnings summary ===============================
+src/models/models.py:41
+  /home/nicoboco/vscode/projeto-integrador/tests/../src/models/models.py:41: SAWarning: Can't validate argument 'passive_deletes'; can't locate any SQLAlchemy dialect named 'passive'
+    class Vendas(Base):
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_vendas.py::test_create_vendas - AssertionError: assert {'da...
+=================== 1 failed, 11 passed, 1 warning in 4.95s ====================
+============================= test session starts ==============================
+platform linux -- Python 3.10.5, pytest-7.4.2, pluggy-1.3.0
+rootdir: /home/nicoboco/vscode/projeto-integrador
+plugins: anyio-3.6.2
+collected 22 items
+
+tests/test_compradores.py .....                                          [ 22%]
+tests/test_fornecedores.py .....                                         [ 45%]
+tests/test_insumos.py .....                                              [ 68%]
+tests/test_vendas.py ....FFF                                             [100%]
+
+=================================== FAILURES ===================================
+____________________________ test_get_vendas_by_id _____________________________
+
+    def test_get_vendas_by_id():
+        id = get_id('vendas')
+        res = client.get(f'/vendas/busca/{id}')
+>       assert res.json()['mensagem']['nome_insumo'] == 'Cobre'
+E       KeyError: 'nome_insumo'
+
+tests/test_vendas.py:58: KeyError
+------------------------------ Captured log call -------------------------------
+INFO     sqlalchemy.engine.Engine:base.py:1027 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1853 SELECT tb_vendas.id AS tb_vendas_id, tb_vendas.id_insumo AS tb_vendas_id_insumo, tb_vendas.id_comprador AS tb_vendas_id_comprador, tb_vendas.peso AS tb_vendas_peso, tb_vendas.data_venda AS tb_vendas_data_venda, tb_vendas.responsavel AS tb_vendas_responsavel, tb_vendas.valor AS tb_vendas_valor, tb_vendas.created_at AS tb_vendas_created_at, tb_vendas.updated_at AS tb_vendas_updated_at 
+FROM tb_vendas 
+ LIMIT %(param_1)s, %(param_2)s
+INFO     sqlalchemy.engine.Engine:base.py:1858 [cached since 0.02728s ago] {'param_1': 0, 'param_2': 10}
+INFO     sqlalchemy.engine.Engine:base.py:1055 ROLLBACK
+INFO     sqlalchemy.engine.Engine:base.py:1027 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1853 SELECT tb_vendas.id AS tb_vendas_id, tb_vendas.id_insumo AS tb_vendas_id_insumo, tb_vendas.id_comprador AS tb_vendas_id_comprador, tb_vendas.peso AS tb_vendas_peso, tb_vendas.data_venda AS tb_vendas_data_venda, tb_vendas.responsavel AS tb_vendas_responsavel, tb_vendas.valor AS tb_vendas_valor, tb_vendas.created_at AS tb_vendas_created_at, tb_vendas.updated_at AS tb_vendas_updated_at 
+FROM tb_vendas 
+WHERE tb_vendas.id = %(id_1)s 
+ LIMIT %(param_1)s
+INFO     sqlalchemy.engine.Engine:base.py:1858 [generated in 0.00059s] {'id_1': 1092578513, 'param_1': 1}
+INFO     sqlalchemy.engine.Engine:base.py:1055 ROLLBACK
+______________________________ test_update_vendas ______________________________
+
+    def test_update_vendas():
+        id = get_id('vendas')
+        id_fornecedor = get_id('fornecedores')
+        insumo = {'nome_insumo': 'Ferro', 'id_fornecedor': id_fornecedor}
+        res = client.put(f'/vendas/atualiza/{id}', json=insumo)
+    
+>       assert res.json()['status'] == 204
+E       KeyError: 'status'
+
+tests/test_vendas.py:66: KeyError
+------------------------------ Captured log call -------------------------------
+INFO     sqlalchemy.engine.Engine:base.py:1027 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1853 SELECT tb_vendas.id AS tb_vendas_id, tb_vendas.id_insumo AS tb_vendas_id_insumo, tb_vendas.id_comprador AS tb_vendas_id_comprador, tb_vendas.peso AS tb_vendas_peso, tb_vendas.data_venda AS tb_vendas_data_venda, tb_vendas.responsavel AS tb_vendas_responsavel, tb_vendas.valor AS tb_vendas_valor, tb_vendas.created_at AS tb_vendas_created_at, tb_vendas.updated_at AS tb_vendas_updated_at 
+FROM tb_vendas 
+ LIMIT %(param_1)s, %(param_2)s
+INFO     sqlalchemy.engine.Engine:base.py:1858 [cached since 0.1484s ago] {'param_1': 0, 'param_2': 10}
+INFO     sqlalchemy.engine.Engine:base.py:1055 ROLLBACK
+INFO     sqlalchemy.engine.Engine:base.py:1027 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1853 SELECT tb_fornecedores.id AS tb_fornecedores_id, tb_fornecedores.nome AS tb_fornecedores_nome, tb_fornecedores.empresa AS tb_fornecedores_empresa, tb_fornecedores.created_at AS tb_fornecedores_created_at, tb_fornecedores.updated_at AS tb_fornecedores_updated_at 
+FROM tb_fornecedores 
+ LIMIT %(param_1)s, %(param_2)s
+INFO     sqlalchemy.engine.Engine:base.py:1858 [cached since 3.867s ago] {'param_1': 0, 'param_2': 10}
+INFO     sqlalchemy.engine.Engine:base.py:1055 ROLLBACK
+______________________________ test_delete_vendas ______________________________
+
+    def test_delete_vendas():
+        id = get_id('vendas')
+        res = client.delete(f'/vendas/deleta/{id}')
+    
+>       assert res.json()['status'] == 204
+E       KeyError: 'status'
+
+tests/test_vendas.py:73: KeyError
+------------------------------ Captured log call -------------------------------
+INFO     sqlalchemy.engine.Engine:base.py:1027 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1853 SELECT tb_vendas.id AS tb_vendas_id, tb_vendas.id_insumo AS tb_vendas_id_insumo, tb_vendas.id_comprador AS tb_vendas_id_comprador, tb_vendas.peso AS tb_vendas_peso, tb_vendas.data_venda AS tb_vendas_data_venda, tb_vendas.responsavel AS tb_vendas_responsavel, tb_vendas.valor AS tb_vendas_valor, tb_vendas.created_at AS tb_vendas_created_at, tb_vendas.updated_at AS tb_vendas_updated_at 
+FROM tb_vendas 
+ LIMIT %(param_1)s, %(param_2)s
+INFO     sqlalchemy.engine.Engine:base.py:1858 [cached since 0.1683s ago] {'param_1': 0, 'param_2': 10}
+INFO     sqlalchemy.engine.Engine:base.py:1055 ROLLBACK
+INFO     sqlalchemy.engine.Engine:base.py:1027 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1853 SELECT tb_vendas.id AS tb_vendas_id, tb_vendas.id_insumo AS tb_vendas_id_insumo, tb_vendas.id_comprador AS tb_vendas_id_comprador, tb_vendas.peso AS tb_vendas_peso, tb_vendas.data_venda AS tb_vendas_data_venda, tb_vendas.responsavel AS tb_vendas_responsavel, tb_vendas.valor AS tb_vendas_valor, tb_vendas.created_at AS tb_vendas_created_at, tb_vendas.updated_at AS tb_vendas_updated_at 
+FROM tb_vendas 
+WHERE tb_vendas.id = %(id_1)s 
+ LIMIT %(param_1)s
+INFO     sqlalchemy.engine.Engine:base.py:1858 [cached since 0.1214s ago] {'id_1': 1092578513, 'param_1': 1}
+INFO     sqlalchemy.engine.Engine:base.py:1853 SELECT tb_vendas.id AS tb_vendas_id, tb_vendas.id_insumo AS tb_vendas_id_insumo, tb_vendas.id_comprador AS tb_vendas_id_comprador, tb_vendas.peso AS tb_vendas_peso, tb_vendas.data_venda AS tb_vendas_data_venda, tb_vendas.responsavel AS tb_vendas_responsavel, tb_vendas.valor AS tb_vendas_valor, tb_vendas.created_at AS tb_vendas_created_at, tb_vendas.updated_at AS tb_vendas_updated_at 
+FROM tb_vendas 
+WHERE tb_vendas.id = %(id_1)s 
+ LIMIT %(param_1)s
+INFO     sqlalchemy.engine.Engine:base.py:1858 [cached since 0.1225s ago] {'id_1': 1092578513, 'param_1': 1}
+INFO     sqlalchemy.engine.Engine:base.py:1055 ROLLBACK
+=============================== warnings summary ===============================
+src/database/connection.py:17
+  /home/nicoboco/vscode/projeto-integrador/tests/../src/database/connection.py:17: MovedIn20Warning: Deprecated API features detected! These feature(s) are not compatible with SQLAlchemy 2.0. To prevent incompatible upgrades prior to updating applications, ensure requirements files are pinned to "sqlalchemy<2.0". Set environment variable SQLALCHEMY_WARN_20=1 to show all deprecation warnings.  Set environment variable SQLALCHEMY_SILENCE_UBER_WARNING=1 to silence this message. (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+    Base = declarative_base()
+
+src/models/models.py:41
+  /home/nicoboco/vscode/projeto-integrador/tests/../src/models/models.py:41: SAWarning: Can't validate argument 'passive_deletes'; can't locate any SQLAlchemy dialect named 'passive'
+    class Vendas(Base):
+
+tests/test_compradores.py::test_delete_compradores
+  /home/nicoboco/vscode/projeto-integrador/tests/../src/controllers/compradores_controller.py:34: SAWarning: DELETE statement on table 'tb_vendas' expected to delete 2 row(s); 0 were matched.  Please set confirm_deleted_rows=False within the mapper configuration to prevent this warning.
+    db.commit()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_vendas.py::test_get_vendas_by_id - KeyError: 'nome_insumo'
+FAILED tests/test_vendas.py::test_update_vendas - KeyError: 'status'
+FAILED tests/test_vendas.py::test_delete_vendas - KeyError: 'status'
+=================== 3 failed, 19 passed, 3 warnings in 6.87s ===================
+============================= test session starts ==============================
+platform linux -- Python 3.10.5, pytest-7.4.2, pluggy-1.3.0
+rootdir: /home/nicoboco/vscode/projeto-integrador
+plugins: anyio-3.6.2
+collected 21 items
+
+tests/test_compradores.py .....                                          [ 23%]
+tests/test_fornecedores.py .....                                         [ 47%]
+tests/test_insumos.py .....                                              [ 71%]
+tests/test_vendas.py .....F                                              [100%]
+
+=================================== FAILURES ===================================
+______________________________ test_delete_vendas ______________________________
+
+    def test_delete_vendas():
+        id = get_id('vendas')
+        res = client.delete(f'/vendas/deleta/{id}')
+    
+>       assert res.json()['status'] == 204
+E       assert {'detail': "Nao foi possivel deletar dados, erro interno: Class 'sqlalchemy.orm.query.Query' is not mapped", 'headers': None, 'status_code': 500} == 204
+E        +  where {'detail': "Nao foi possivel deletar dados, erro interno: Class 'sqlalchemy.orm.query.Query' is not mapped", 'headers': None, 'status_code': 500} = <bound method Response.json of <Response [200 OK]>>()
+E        +    where <bound method Response.json of <Response [200 OK]>> = <Response [200 OK]>.json
+
+tests/test_vendas.py:73: AssertionError
+------------------------------ Captured log call -------------------------------
+INFO     sqlalchemy.engine.Engine:base.py:1027 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1853 SELECT tb_vendas.id AS tb_vendas_id, tb_vendas.id_insumo AS tb_vendas_id_insumo, tb_vendas.id_comprador AS tb_vendas_id_comprador, tb_vendas.peso AS tb_vendas_peso, tb_vendas.data_venda AS tb_vendas_data_venda, tb_vendas.responsavel AS tb_vendas_responsavel, tb_vendas.valor AS tb_vendas_valor, tb_vendas.created_at AS tb_vendas_created_at, tb_vendas.updated_at AS tb_vendas_updated_at 
+FROM tb_vendas 
+ LIMIT %(param_1)s, %(param_2)s
+INFO     sqlalchemy.engine.Engine:base.py:1858 [cached since 0.07899s ago] {'param_1': 0, 'param_2': 10}
+INFO     sqlalchemy.engine.Engine:base.py:1055 ROLLBACK
+INFO     sqlalchemy.engine.Engine:base.py:1027 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1853 SELECT tb_vendas.id AS tb_vendas_id, tb_vendas.id_insumo AS tb_vendas_id_insumo, tb_vendas.id_comprador AS tb_vendas_id_comprador, tb_vendas.peso AS tb_vendas_peso, tb_vendas.data_venda AS tb_vendas_data_venda, tb_vendas.responsavel AS tb_vendas_responsavel, tb_vendas.valor AS tb_vendas_valor, tb_vendas.created_at AS tb_vendas_created_at, tb_vendas.updated_at AS tb_vendas_updated_at 
+FROM tb_vendas 
+WHERE tb_vendas.id = %(id_1)s 
+ LIMIT %(param_1)s
+INFO     sqlalchemy.engine.Engine:base.py:1858 [cached since 0.0509s ago] {'id_1': 1536835951, 'param_1': 1}
+INFO     sqlalchemy.engine.Engine:base.py:1055 ROLLBACK
+=============================== warnings summary ===============================
+src/database/connection.py:17
+  /home/nicoboco/vscode/projeto-integrador/tests/../src/database/connection.py:17: MovedIn20Warning: Deprecated API features detected! These feature(s) are not compatible with SQLAlchemy 2.0. To prevent incompatible upgrades prior to updating applications, ensure requirements files are pinned to "sqlalchemy<2.0". Set environment variable SQLALCHEMY_WARN_20=1 to show all deprecation warnings.  Set environment variable SQLALCHEMY_SILENCE_UBER_WARNING=1 to silence this message. (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+    Base = declarative_base()
+
+src/models/models.py:41
+  /home/nicoboco/vscode/projeto-integrador/tests/../src/models/models.py:41: SAWarning: Can't validate argument 'passive_deletes'; can't locate any SQLAlchemy dialect named 'passive'
+    class Vendas(Base):
+
+tests/test_insumos.py::test_delete_insumos
+  /home/nicoboco/vscode/projeto-integrador/tests/../src/controllers/insumos_controller.py:37: SAWarning: DELETE statement on table 'tb_vendas' expected to delete 1 row(s); 0 were matched.  Please set confirm_deleted_rows=False within the mapper configuration to prevent this warning.
+    db.commit()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_vendas.py::test_delete_vendas - assert {'detail': "Nao foi ...
+=================== 1 failed, 20 passed, 3 warnings in 8.59s ===================

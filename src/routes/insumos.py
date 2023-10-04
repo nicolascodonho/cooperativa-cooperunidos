@@ -55,7 +55,6 @@ async def update_insumos(id: int, insumos: schemas.InsumosUpdate, db: Session = 
         return {"mensagem": msg, "status": 204}
     except Exception as e:
         return HTTPException(500, detail="Nao foi possivel atualizar insumo, erro interno")
-    
 
 @router.delete("/deleta/{id}")
 async def delete_insumos(id: int, db: Session = Depends(get_db)):

@@ -11,7 +11,7 @@ services:
       - 3306:3306
     volumes:
       - file-db:/var/lib/mysql
-      - ./cooperativa.sql:/docker-entrypoint-initdb.d/cooperativa.sql
+      - ./cooperativa.sql/:/docker-entrypoint-initdb.d/cooperativa.sql
     container_name: cooperunidos_db
     networks:
       - cooperunidos-network
