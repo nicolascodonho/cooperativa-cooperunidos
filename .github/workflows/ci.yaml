@@ -28,14 +28,14 @@ jobs:
         run: |
           docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
           echo 'Building docker image'
-          docker build --no-cache --rm -t hub.docker.com/${{secrets.DOCKER_USERNAME}}/projeto-integrador-api:$DOCKERTAG .
+          docker build --no-cache --rm -t ${{secrets.DOCKER_USERNAME}}/projeto-integrador-api:$DOCKERTAG .
           echo 'Pushing the docker image ...'
           echo 'Done (-:'
 
       - name: Trivy Scanning
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'hub.docker.com/${{secrets.DOCKER_USERNAME}}/projeto-integrador-api:${{env.DOCKERTAG}}'
+          image-ref: '${{secrets.DOCKER_USERNAME}}/projeto-integrador-api:${{env.DOCKERTAG}}'
           format: 'table'
           output: 'trivy-results.txt'
 
@@ -48,7 +48,7 @@ jobs:
 
       
       - name: Push to docker 
-        run: docker push hub.docker.com/${{secrets.DOCKER_USERNAME}}/projeto-integrador-api:$DOCKERTAG
+        run: docker push ${{secrets.DOCKER_USERNAME}}/projeto-integrador-api:$DOCKERTAG
 
       - name: End
         run: |
