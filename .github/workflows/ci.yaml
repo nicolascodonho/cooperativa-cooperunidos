@@ -22,7 +22,7 @@ jobs:
            
       - name: Creating a docker tag
         run: |
-          DOCKERTAG=$(echo '${{ steps.time.outputs.time }}')
+          echo "DOCKERTAG=$(echo '${{ steps.time.outputs.time }}')" >> $GITHUB_ENV
       
       - name: Build Docker
         run: |
