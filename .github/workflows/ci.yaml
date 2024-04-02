@@ -35,7 +35,7 @@ jobs:
       - name: Trivy Scanning
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'hub.docker.com/${{secrets.DOCKER_USERNAME}}/projeto-integrador_api:$DOCKERTAG'
+          image-ref: 'hub.docker.com/${{secrets.DOCKER_USERNAME}}/projeto-integrador_api:${{env.DOCKERTAG}}'
           format: 'table'
           output: 'trivy-results.txt'
 
