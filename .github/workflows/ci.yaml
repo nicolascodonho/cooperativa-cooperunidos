@@ -18,7 +18,7 @@ jobs:
         uses: nanzm/get-time-action@master
         with:
           timeZone: UTC+8
-          format: 'YYYY-MM-DD-HH-mm-ss'
+          format: 'YYYYMMDDHHmm'
            
       - name: Creating a docker tag
         run: |
@@ -28,14 +28,14 @@ jobs:
         run: |
           docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
           echo 'Building docker image'
-          docker build --no-cache --rm -t hub.docker.com/${{secrets.DOCKER_USERNAME}}/projeto-integrador_api:$DOCKERTAG .
+          docker build --no-cache --rm -t hub.docker.com/${{secrets.DOCKER_USERNAME}}/projeto-integrador-api:$DOCKERTAG .
           echo 'Pushing the docker image ...'
           echo 'Done (-:'
 
       - name: Trivy Scanning
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'hub.docker.com/${{secrets.DOCKER_USERNAME}}/projeto-integrador_api:${{env.DOCKERTAG}}'
+          image-ref: 'hub.docker.com/${{secrets.DOCKER_USERNAME}}/projeto-integrador-api:${{env.DOCKERTAG}}'
           format: 'table'
           output: 'trivy-results.txt'
 
@@ -48,7 +48,7 @@ jobs:
 
       
       - name: Push to docker 
-        run: docker push hub.docker.com/${{secrets.DOCKER_USERNAME}}/projeto-integrador_api:$DOCKERTAG
+        run: docker push hub.docker.com/${{secrets.DOCKER_USERNAME}}/projeto-integrador-api:$DOCKERTAG
 
       - name: End
         run: |
