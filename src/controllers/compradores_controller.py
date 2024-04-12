@@ -15,7 +15,7 @@ def create_data(db: Session, comprador: schemas.CompradoresCreate):
 def get_all_data(db: Session, skip: int = 0, limit: int = 10):
     data = db.query(models.Compradores).offset(skip).limit(limit).all()
     if not data:
-        raise HTTPException(404, detail="Id nao encontrado")
+        raise HTTPException(404, detail="Lista de compradores vazia!")
     return data
 
 def get_id_data(id: int, db: Session):

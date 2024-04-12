@@ -18,7 +18,7 @@ def get_all_data(db: Session, skip: int = 0, limit: int = 10):
 def get_id_data(id: int, db: Session):
     data = db.query(models.Insumos).filter(models.Insumos.id == id).first()
     if not data:
-        raise HTTPException(404, detail="Id nao encontrado")
+        raise HTTPException(404, detail="Lista de insumos vazia!")
     return data
 
 def delete_by_id(id: int, db: Session):
