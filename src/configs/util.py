@@ -8,15 +8,15 @@ from typing import Union, Any
 from jose import jwt
 
 config = dotenv_values(".env")
-password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 reuseable_oauth = OAuth2PasswordBearer(
     tokenUrl="/login",
     scheme_name="JWT"
 )
 
 def get_current_user(token: str = Depends(reuseable_oauth)):
-    payload = jwt.decode(token, JWT_SECRET_KEY, ALGORITHM)
+    payload = jwt.decode(token, config['JWT_SECRET_KEY'], config['ALGORITHM'])
     if datetime.fromtimestamp(payload['exp']) < datetime.now():
         raise HTTPException(
             status_code = status.HTTP_401_UNAUTHORIZED,
@@ -46,10 +46,10 @@ def create_access_token(subject: Union[str, Any], expires_delta: int = None) -> 
     if expires_delta is not None:
         expires_delta = datetime.utcnow() + expires_delta
     else:
-        expires_delta = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        expires_delta = datetime.utcnow() + timedelta(minutes=int(config['ACCESS_TOKEN_EXPIRE_MINUTES']))
     
     to_encode = {"exp": expires_delta, "sub": str(subject)}
-    encoded_jwt = jwt.encode(to_encode, JWT_SECRET_KEY, ALGORITHM)
+    encoded_jwt = jwt.encode(to_encode, config['JWT_SECRET_KEY'], config['ALGORITHM'])
     return encoded_jwt
 
 # def get_current_user(db: Session = Depends(get_db), token: str = Depends(reuseable_oauth)):
