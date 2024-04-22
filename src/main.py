@@ -5,6 +5,7 @@ from src.routes import insumos
 from src.routes import vendas
 from src.routes import compradores
 from src.routes import fornecedores
+from src.routes import usuarios
 
 app = FastAPI()
 
@@ -20,6 +21,7 @@ app.include_router(vendas.router, prefix="/vendas")
 app.include_router(insumos.router, prefix="/insumos")
 app.include_router(compradores.router, prefix="/compradores")
 app.include_router(fornecedores.router, prefix="/fornecedores")
+app.include_router(usuarios.router)
 
 logging.basicConfig()
 logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)

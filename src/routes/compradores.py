@@ -3,7 +3,8 @@ from fastapi import HTTPException, Depends, APIRouter
 from src.models import schemas, models
 from src.database.get_db import get_db
 from src.database.connection import engine
-from src.controllers import compradores_controller 
+from src.controllers import compradores_controller
+from src.configs.util import get_current_user
 
 router = APIRouter(
     tags=["Compradores"]
@@ -13,7 +14,7 @@ models.Base.metadata.create_all(bind=engine)
 
 
 @router.get("/busca")
-def get_compradores(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
+def get_compradores(skip: int = 0, limit: int = 10, db: Session = Depends(get_db), user = Depends(get_current_user)):
     """
     <code class='highlight'>/busca</code>
         Retorna os compradores existentes dentro do banco limitados por skip e limit"""
@@ -27,7 +28,7 @@ def get_compradores(skip: int = 0, limit: int = 10, db: Session = Depends(get_db
     }
 
 @router.get("/busca/{id}")
-def get_comprador(id: int, db: Session = Depends(get_db)):
+def get_comprador(id: int, db: Session = Depends(get_db), user = Depends(get_current_user)):
     """
     <code class='highlight'>/busca/{id}</code>
         Retorna o comprador através de um ID"""
@@ -38,7 +39,7 @@ def get_comprador(id: int, db: Session = Depends(get_db)):
     }
 
 @router.post("/cria")
-async def save_compradores(compradores: schemas.CompradoresCreate, db: Session = Depends(get_db)):
+async def save_compradores(compradores: schemas.CompradoresCreate, db: Session = Depends(get_db), user = Depends(get_current_user)):
     """
     <code class='highlight'>/cria</code>
         Cria compradores baseado nos models """
@@ -53,7 +54,7 @@ async def save_compradores(compradores: schemas.CompradoresCreate, db: Session =
         return HTTPException(500, detail="Nao foi possível criar dados, erro interno")
 
 @router.put("/atualiza/{id}")
-async def update_comprador(id: int, comprador: schemas.CompradoresUpdate, db: Session = Depends(get_db)):
+async def update_comprador(id: int, comprador: schemas.CompradoresUpdate, db: Session = Depends(get_db), user = Depends(get_current_user)):
     """
     <code class='highlight'>/atualiza/{id}</code>
         Atualiza dados através de um ID"""
@@ -69,7 +70,7 @@ async def update_comprador(id: int, comprador: schemas.CompradoresUpdate, db: Se
         return HTTPException(500, detail="Nao foi possivel atualizar dados, erro interno")
     
 @router.delete("/deleta/{id}")
-async def delete_comprador(id: int, db: Session = Depends(get_db)):
+async def delete_comprador(id: int, db: Session = Depends(get_db), user = Depends(get_current_user)):
     """
     <code class='highlight'>/delete/{id}</code>
         Deleta dados através de um ID"""
