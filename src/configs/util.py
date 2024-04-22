@@ -1,22 +1,13 @@
 from fastapi.exceptions import HTTPException
-from pydantic import ValidationError
 from fastapi import status, Depends
 from fastapi.security import OAuth2PasswordBearer
 from dotenv import dotenv_values
 from passlib.context import CryptContext
-from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 from typing import Union, Any
 from jose import jwt
 
 config = dotenv_values(".env")
-
-ACCESS_TOKEN_EXPIRE_MINUTES = 30  # 30 minutes
-REFRESH_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7 # 7 days
-ALGORITHM = "HS256"
-JWT_SECRET_KEY = 'ff405abf2fdd424bba28642d345e44dbaa3371cb46f483e72e1c96227cd836a8'
-JWT_REFRESH_SECRET_KEY = 'b7899ca2e30698c591229c51739229199ae77c6d40e549028872011249838c26'
-
 password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 reuseable_oauth = OAuth2PasswordBearer(
