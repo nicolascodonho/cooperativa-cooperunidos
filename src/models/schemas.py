@@ -76,3 +76,21 @@ class Compradores(CompradoresBase):
 
     class Config:
         orm_mode = True
+
+class UsuariosBase(BaseModel):
+    email: str
+    password: str
+
+class UsuariosCreate(UsuariosBase):
+    pass
+    
+class UsuariosUpdate(UsuariosBase):
+    pass
+
+class Usuarios(UsuariosBase):
+    id: int
+    created_at: Optional[datetime]
+    updated_at: Optional[datetime]
+
+    class Config:
+        orm_mode = True

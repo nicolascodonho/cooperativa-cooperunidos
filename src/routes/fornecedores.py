@@ -3,7 +3,8 @@ from sqlalchemy.orm import Session
 from src.models import schemas, models
 from src.database.get_db import get_db
 from src.database.connection import engine
-from src.controllers import fornecedor_controller 
+from src.controllers import fornecedor_controller
+from src.configs.util import get_current_user
 
 router = APIRouter(
     tags=["Fornecedores"]
@@ -13,7 +14,7 @@ models.Base.metadata.create_all(bind=engine)
 
 
 @router.get("/busca")
-def get_fornecedores(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
+def get_fornecedores(skip: int = 0, limit: int = 10, db: Session = Depends(get_db), user = Depends(get_current_user)):
     """
     <code class='highlight'>/busca</code>
         Retorna os insumos existentes dentro do banco limitados por skip e limit"""
@@ -24,7 +25,7 @@ def get_fornecedores(skip: int = 0, limit: int = 10, db: Session = Depends(get_d
     return {"mensagem": fornecedor, "status": 200}
 
 @router.get("/busca/{id}")
-def get_fornecedor(id: int, db: Session = Depends(get_db)):
+def get_fornecedor(id: int, db: Session = Depends(get_db), user = Depends(get_current_user)):
     """
     <code class='highlight'>/busca/{id}</code>
         Retorna o fornecedor através de um ID"""
@@ -32,7 +33,7 @@ def get_fornecedor(id: int, db: Session = Depends(get_db)):
     return {"mensagem": fornecedor, "status": 200}
 
 @router.post("/cria")
-async def save_fornecedor(fornecedor: schemas.FornecedorCreate, db: Session = Depends(get_db)):
+async def save_fornecedor(fornecedor: schemas.FornecedorCreate, db: Session = Depends(get_db), user = Depends(get_current_user)):
     """
     <code class='highlight'>/cria</code>
         Cria fornecedores baseado nos models """
@@ -44,7 +45,7 @@ async def save_fornecedor(fornecedor: schemas.FornecedorCreate, db: Session = De
         raise HTTPException(500, detail="Nao foi possível criar dados, erro interno")
         
 @router.put("/atualiza/{id}")
-async def update_fornecedor(id: int, fornecedor: schemas.FornecedorUpdate, db: Session = Depends(get_db)):
+async def update_fornecedor(id: int, fornecedor: schemas.FornecedorUpdate, db: Session = Depends(get_db), user = Depends(get_current_user)):
     """
     <code class='highlight'>/atualiza/{id}</code>
         Atualiza dados através de um ID"""
@@ -58,7 +59,7 @@ async def update_fornecedor(id: int, fornecedor: schemas.FornecedorUpdate, db: S
         return HTTPException(500, detail="Nao foi possivel atualizar dados, erro interno")
     
 @router.delete("/deleta/{id}")
-async def delete_fornecedor(id: int, db: Session = Depends(get_db)):
+async def delete_fornecedor(id: int, db: Session = Depends(get_db), user = Depends(get_current_user)):
     """
     <code class='highlight'>/delete/{id}</code>
         Deleta dados através de um ID"""

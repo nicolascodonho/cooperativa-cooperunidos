@@ -15,7 +15,7 @@ def create_data(db: Session, vendas: schemas.VendasCreate):
 def get_all_data(db: Session, skip: int = 0, limit: int = 10):
     data =  db.query(models.Vendas).offset(skip).limit(limit).all()
     if not data:
-        raise HTTPException(404, detail="Id nao encontrado")
+        raise HTTPException(404, detail="Lista de vendas vazia!")
     return data
 
 def get_id_data(id: int, db: Session):

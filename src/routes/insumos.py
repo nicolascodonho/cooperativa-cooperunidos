@@ -4,6 +4,7 @@ from src.controllers import insumos_controller
 from src.models import schemas, models
 from src.database.get_db import get_db
 from src.database.connection import engine
+from src.configs.util import get_current_user
 
 router = APIRouter(
     tags=["Insumos"]
@@ -12,7 +13,7 @@ router = APIRouter(
 models.Base.metadata.create_all(bind=engine)
 
 @router.get("/busca")
-def get_insumos(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
+def get_insumos(skip: int = 0, limit: int = 10, db: Session = Depends(get_db), user = Depends(get_current_user)):
     """
     <code class='highlight'>/busca</code>
         Retorna os insumos existentes dentro do banco limitados por skip e limit"""
@@ -30,7 +31,7 @@ def get_insumo(id: int, db: Session = Depends(get_db)):
     return {"mensagem": insumo, "status": 200}
 
 @router.post("/cria")
-async def save_insumos(insumos: schemas.InsumosCreate, db: Session = Depends(get_db)):
+async def save_insumos(insumos: schemas.InsumosCreate, db: Session = Depends(get_db), user = Depends(get_current_user)):
     """
     <code class='highlight'>/cria</code>
         Cria insumos baseado nos models """
@@ -42,7 +43,7 @@ async def save_insumos(insumos: schemas.InsumosCreate, db: Session = Depends(get
         return HTTPException(500, detail="Nao foi possivel criado insumo, erro interno")
 
 @router.put("/atualiza/{id}")
-async def update_insumos(id: int, insumos: schemas.InsumosUpdate, db: Session = Depends(get_db)):
+async def update_insumos(id: int, insumos: schemas.InsumosUpdate, db: Session = Depends(get_db), user = Depends(get_current_user)):
     """
     <code class='highlight'>/atualiza/{id}</code>
         Atualiza dados através de um ID"""
@@ -57,7 +58,7 @@ async def update_insumos(id: int, insumos: schemas.InsumosUpdate, db: Session = 
         return HTTPException(500, detail="Nao foi possivel atualizar insumo, erro interno")
 
 @router.delete("/deleta/{id}")
-async def delete_insumos(id: int, db: Session = Depends(get_db)):
+async def delete_insumos(id: int, db: Session = Depends(get_db), user = Depends(get_current_user)):
     """
     <code class='highlight'>/delete/{id}</code>
         Deleta dados através de um ID"""

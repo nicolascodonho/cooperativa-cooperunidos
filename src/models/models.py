@@ -49,3 +49,11 @@ class Vendas(Base):
     valor= Column('valor', DECIMAL(30, 2), nullable=False)
     created_at = Column('created_at', DateTime, default=datetime.utcnow)
     updated_at = Column('updated_at', DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class Usuarios(Base):
+    __tablename__ = 'tb_users'
+    id = Column('id', BigInteger, primary_key=True, index=True)
+    email = Column('email', String(80), nullable=False)
+    password = Column('password', String(80), nullable=False)
+    created_at = Column('created_at', DateTime, default=datetime.utcnow)
+    updated_at = Column('updated_at', DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
