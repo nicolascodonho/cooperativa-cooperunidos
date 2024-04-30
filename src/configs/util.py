@@ -1,3 +1,4 @@
+import requests
 from fastapi.exceptions import HTTPException
 from fastapi import status, Depends
 from fastapi.security import OAuth2PasswordBearer
@@ -51,32 +52,3 @@ def create_access_token(subject: Union[str, Any], expires_delta: int = None) -> 
     to_encode = {"exp": expires_delta, "sub": str(subject)}
     encoded_jwt = jwt.encode(to_encode, config['JWT_SECRET_KEY'], config['ALGORITHM'])
     return encoded_jwt
-
-# def get_current_user(db: Session = Depends(get_db), token: str = Depends(reuseable_oauth)):
-#     try:
-#         payload = jwt.decode(
-#             token, JWT_SECRET_KEY, algorithms=[ALGORITHM]
-#         )        
-        
-#         if datetime.fromtimestamp(payload['exp']) < datetime.now():
-#             raise HTTPException(
-#                 status_code = status.HTTP_401_UNAUTHORIZED,
-#                 detail="Token expired",
-#                 headers={"WWW-Authenticate": "Bearer"},
-#             )
-#     except(jwt.JWTError, ValidationError):
-#         raise HTTPException(
-#             status_code=status.HTTP_403_FORBIDDEN,
-#             detail="Could not validate credentials",
-#             headers={"WWW-Authenticate": "Bearer"},
-#         )
-    
-#     user = get_user_by_email(db, payload['email'])
-
-#     if user is None:
-#         raise HTTPException(
-#             status_code=status.HTTP_404_NOT_FOUND,
-#             detail="Could not find user",
-#         )
-    
-#     return user

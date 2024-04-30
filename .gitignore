@@ -1,5 +1,4 @@
 env
-.env
 create_db.sql
 *.sh
 *__pycache__/
@@ -8,3 +7,5 @@ create_db.sql
 *.pytest_cache/
 *.pytest_cache/*
 *.pytest_cache*
+temp
+.env

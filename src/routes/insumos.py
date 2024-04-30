@@ -23,7 +23,7 @@ def get_insumos(skip: int = 0, limit: int = 10, db: Session = Depends(get_db), u
     return {"mensagem": insumos, "status": 200}
 
 @router.get("/busca/{id}")
-def get_insumo(id: int, db: Session = Depends(get_db)):
+def get_insumo(id: int, db: Session = Depends(get_db), user = Depends(get_current_user)):
     """
     <code class='highlight'>/busca/{id}</code>
         Retorna o insumo através de um ID"""
