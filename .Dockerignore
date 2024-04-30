@@ -3,3 +3,7 @@
 *__pycache__*
 */__pycache__/
 env
+temp
+.git
+.github
+.gitignore

@@ -1,6 +1,7 @@
 import logging
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from src.routes import insumos
 from src.routes import vendas
 from src.routes import compradores
@@ -16,6 +17,15 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.middleware("http")
+async def handle_invalid_request(request: Request, call_next):
+    try:
+        response = await call_next(request)
+        return response
+    except Exception as e:
+        if "Invalid token" in str(e) or "Expired token" in str(e) or "Signature has expired" in str(e):
+            return JSONResponse(status_code=403, content={"detail": "Token expirado ou invalidado, por favor, faça o logout e login novamente"})
 
 app.include_router(vendas.router, prefix="/vendas")
 app.include_router(insumos.router, prefix="/insumos")
